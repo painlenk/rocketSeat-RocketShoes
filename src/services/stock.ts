@@ -14,7 +14,7 @@ export const  getStock = async  ()  => {
     return []
 }
 
-export const getStockItem = async  (id: number) => {
+export const getStockId = async  (id: number) => {
    const itemStock =  await api.get<Stock>(`/stock/${id}`).then(response => response.data)
     return itemStock
 }
