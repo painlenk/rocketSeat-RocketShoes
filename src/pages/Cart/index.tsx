@@ -1,14 +1,10 @@
-import { getValueAndUnit } from "polished";
-import React from "react";
 import {
   MdDelete,
   MdAddCircleOutline,
   MdRemoveCircleOutline,
 } from "react-icons/md";
-import { textSpanEnd } from "typescript";
-
 import { useCart } from "../../hooks/useCart";
-import { formatPrice, formateProduct } from '../../util/format';
+import { formatPrice, formateProduct } from "../../util/format";
 import { Container, ProductTable, Total } from "./styles";
 
 interface Product {
@@ -22,22 +18,14 @@ interface Product {
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
 
-  
-
-  
-
   const total = formatPrice(
     cart.reduce((sumTotal, product) => {
-      sumTotal += (product.price * product.amount)
-      return sumTotal
+      sumTotal += product.price * product.amount;
+      return sumTotal;
     }, 0)
   );
 
- const  subtotal = ( product: Product) => {
-    let total = product.amount * product.price
-    return total
-}
-
+  const subtotal = (product: Product) => product.amount * product.price;
 
   function handleProductIncrement(product: Product) {
     const productId = product.id;
@@ -71,7 +59,7 @@ const Cart = (): JSX.Element => {
           {cart.map((product, index) => (
             <tr data-testid="product" key={product.id}>
               <td>
-                <img src={product.image} />
+                <img src={product.image} alt={product.title} />
               </td>
               <td>
                 <strong>{product.title}</strong>
@@ -103,7 +91,7 @@ const Cart = (): JSX.Element => {
                 </div>
               </td>
               <td>
-                <strong>{formateProduct(subtotal(product) )}</strong>
+                <strong>{formateProduct(subtotal(product))}</strong>
               </td>
               <td>
                 <button

@@ -1,19 +1,19 @@
-
-import  {ProductFormatted}  from "../pages/Home";
-import { Product, ProductList } from "../types";
+import { ProductFormatted } from "../pages/Home";
+import { Product } from "../types";
 import { api } from "./api";
 
+let products: ProductFormatted[] = [];
+export const getProductsList = async () => {
+  if (products.length === 0) {
+    products = await api
+      .get<ProductFormatted[]>("/products")
+      .then((Response) => Response.data);
+  }
 
+  return products;
+};
 
-
-let batata: ProductFormatted[] = []
-export  const listProducts =  async () => {
-    if(batata.length == 0) {
-        batata = await api.get<ProductFormatted[]>('/products').then(Response => Response.data)
-       
-    }
-
-    return batata
-}
-
-export const getProductId = async  (productId: number) => await api.get<Product>(`/products/${productId}`).then(Response => Response.data)
+export const getProductId = async (productId: number) =>
+  await api
+    .get<Product>(`/products/${productId}`)
+    .then((Response) => Response.data);

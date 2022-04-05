@@ -1,10 +1,8 @@
-import { error } from "console";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { toast } from "react-toastify";
-
 import { getProductId } from "../services/products";
 import { getStockId } from "../services/stock";
-import { Product, Stock } from "../types";
+import { Product } from "../types";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -50,15 +48,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           throw new Error();
         }
       }
-      
 
       if (cartProduct) {
-        
         updateProductAmount({ productId, amount: 1 });
         return;
       }
-
-      
 
       product.amount = 1;
 
@@ -66,9 +60,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       setCart(newCart);
       localStorage.setItem("@RocketShoes:cart", JSON.stringify(newCart));
-
     } catch (e) {
-
       toast.error("Quantidade solicitada fora de estoque");
     }
   };
@@ -84,23 +76,21 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       setCart(newCart);
       localStorage.setItem("@RocketShoes:cart", JSON.stringify(newCart));
-    } catch {
-      
-    }
+    } catch {}
   };
 
-  const updateProductAmount = async ({ productId, amount,}: UpdateProductAmount) => {
-
+  const updateProductAmount = async ({
+    productId,
+    amount,
+  }: UpdateProductAmount) => {
     try {
-      const productIndex = cart.findIndex((item) => item.id == productId);
+      const productIndex = cart.findIndex((item) => item.id === productId);
 
       if (productIndex < 0) {
         return;
       }
 
-      
-
-      const stockProduct = await  getStockId(productId)
+      const stockProduct = await getStockId(productId);
 
       if (cart[productIndex]?.amount + amount > stockProduct.amount) {
         throw new Error();
@@ -112,7 +102,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       localStorage.setItem("@RocketShoes:cart", JSON.stringify(newCart));
       setCart(newCart);
     } catch {
-      
       toast.error("Quantidade solicitada fora de estoque");
     }
   };
